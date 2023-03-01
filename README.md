@@ -1,2 +1,1 @@
-# gMFCAssignment
- SW직군 과제
+# (주)그림 SW 과제를 위한 repository 입니다. :grinning:
