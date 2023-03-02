@@ -223,6 +223,8 @@ void CgMFCProjectDlg::OnBnClickedBtnProcess()
 {
 	int nCenterX = 0;
 	int nCenterY = 0;
-	m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY);
-	m_pImageWindow->DrawCrossLine(nCenterX, nCenterY);
+
+	// threshold 값 초과하는 픽셀의 무게중심 찾기
+	if( m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY) )
+		m_pImageWindow->DrawCrossLine(nCenterX, nCenterY); // 무게중심에 십자모양 라인 그리기
 }
