@@ -193,10 +193,10 @@ void CgMFCProjectDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
-	if (m_pImageWindow)
+	if (m_pImageWindow != nullptr)
 		delete m_pImageWindow;
 
-	if (m_pImageProcess)
+	if (m_pImageProcess != nullptr)
 		delete m_pImageProcess;
 }
 

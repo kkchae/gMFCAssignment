@@ -55,7 +55,7 @@ void CImageWindow::OnPaint()
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	// 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
-	if (m_Image) {
+	if (m_Image != nullptr) {
 		m_Image.Draw(dc, 0, 0);
 	}
 }
@@ -127,7 +127,7 @@ BOOL CImageWindow::CheckInnerCircle(int nCenterX, int nCenterY, int nRadius, int
 void CImageWindow::DrawCrossLine(const int nPosX, const int nPosY, int nLineWidth /*= CROSS_LINE_WIDTH*/, int nLineLength /*= CROSS_LINE_LENGTH*/)
 {
 	CDC* pDC = GetDC();
-	if (pDC) {
+	if (pDC != nullptr) {
 		CPen pen;
 		pen.CreatePen(PS_SOLID, nLineWidth, COLOR_YELLOW);
 		CPen* oldPen = pDC->SelectObject(&pen);
@@ -145,7 +145,7 @@ void CImageWindow::DrawCrossLine(const int nPosX, const int nPosY, int nLineWidt
 void CImageWindow::DrawAroundCircle(const int nPosX, const int nPosY, const int nRadius, int nLineWidth /*= CROSS_LINE_WIDTH*/, int nLineLength /*= CROSS_LINE_LENGTH*/)
 {
 	CDC* pDC = GetDC();
-	if (pDC) {
+	if (pDC != nullptr) {
 		CPen pen;
 		pen.CreatePen(PS_SOLID, nLineWidth, COLOR_YELLOW);
 		CPen* oldPen = pDC->SelectObject(&pen);

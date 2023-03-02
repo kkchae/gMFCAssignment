@@ -20,7 +20,7 @@ CImageProcess::~CImageProcess()
 BOOL CImageProcess::FindPattern(CImage* pImage, const int nThreshHold)
 {
 	BOOL bFound = FALSE;
-	if (pImage) {
+	if (pImage != nullptr) {
 		int nWidth = pImage->GetWidth();
 		int nHeight = pImage->GetHeight();
 		int nPitch = pImage->GetPitch();
@@ -58,7 +58,7 @@ BOOL CImageProcess::FindPattern(CImage* pImage, const int nThreshHold)
 BOOL CImageProcess::FindPattern(CImage* pImage, const int nThreshHold, int* nRetCenterX, int* nRetCenterY)
 {
 	BOOL bFound = FALSE;
-	if (pImage) {
+	if (pImage != nullptr) {
 		int nWidth = pImage->GetWidth();
 		int nHeight = pImage->GetHeight();
 		int nPitch = pImage->GetPitch();
@@ -85,7 +85,7 @@ BOOL CImageProcess::FindPattern(CImage* pImage, const int nThreshHold, int* nRet
 			int nCenterY = (int)(nSumY / nCount);
 
 			// 중심좌표
-			if (nRetCenterX && nRetCenterY) {
+			if (nRetCenterX != nullptr && nRetCenterY != nullptr) {
 				*nRetCenterX = nCenterX;
 				*nRetCenterY = nCenterY;
 			}
