@@ -29,4 +29,5 @@ public:
 	void InitImage(int nBPP = BIT_PER_PIXEL_8);
 	void DrawPattern(const int nPosX, const int nPosY, const int nSize);
 	BOOL CheckInnerCircle(int nCenterX, int nCenterY, int nRadius, int nTargetX, int nTargetY) const;
+	void DrawCrossLine(const int nPosX, const int nPosY, int nLineWidth = CROSS_LINE_WIDTH, int nLineLength = CROSS_LINE_LENGTH);
 };

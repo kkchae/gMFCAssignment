@@ -5,13 +5,14 @@
 #pragma once
 
 #include "ImageWindow.h"
-
+#include "ImageProcess.h"
 
 // CgMFCProjectDlg 대화 상자
 class CgMFCProjectDlg : public CDialogEx
 {
 private:
 	CImageWindow* m_pImageWindow;
+	CImageProcess* m_pImageProcess;
 
 // 생성입니다.
 public:
@@ -40,4 +41,5 @@ public:
 	afx_msg void OnDestroy();
 	int m_nInputSize;
 	afx_msg void OnBnClickedBtnMakePattern();
+	afx_msg void OnBnClickedBtnProcess();
 };

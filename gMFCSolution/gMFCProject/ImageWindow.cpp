@@ -104,7 +104,7 @@ void CImageWindow::DrawPattern(const int nPosX, const int nPosY, const int nSize
 	for (int nCurY = nPosY; nCurY < nPosY + nSize; nCurY++) {
 		for (int nCurX = nPosX; nCurX < nPosX + nSize; nCurX++) {
 			if (CheckInnerCircle(nCenterX, nCenterY, nRadius, nCurX, nCurY)) {
-				fm[nCurY * nPitch + nCurX] = rand() % 256;
+				fm[nCurY * nPitch + nCurX] = (rand() % 255) + 1; // 1~255
 			}
 		}
 	}
@@ -122,4 +122,22 @@ BOOL CImageWindow::CheckInnerCircle(int nCenterX, int nCenterY, int nRadius, int
 		bRet = TRUE;
 
 	return bRet;
+}
+
+void CImageWindow::DrawCrossLine(const int nPosX, const int nPosY, int nLineWidth /*= CROSS_LINE_WIDTH*/, int nLineLength /*= CROSS_LINE_LENGTH*/)
+{
+	CDC* pDC = GetDC();
+	if (pDC) {
+		CPen pen;
+		pen.CreatePen(PS_SOLID, nLineWidth, COLOR_YELLOW);
+		CPen* oldPen = pDC->SelectObject(&pen);
+
+		pDC->MoveTo(nPosX - nLineLength, nPosY); // 가로
+		pDC->LineTo(nPosX + nLineLength, nPosY);
+		pDC->MoveTo(nPosX, nPosY - nLineLength); // 세로
+		pDC->LineTo(nPosX, nPosY + nLineLength);
+
+		pDC->SelectObject(oldPen);
+		pen.DeleteObject();
+	}
 }

@@ -76,6 +76,7 @@ BEGIN_MESSAGE_MAP(CgMFCProjectDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BTN_MAKE_PATTERN, &CgMFCProjectDlg::OnBnClickedBtnMakePattern)
+	ON_BN_CLICKED(IDC_BTN_PROCESS, &CgMFCProjectDlg::OnBnClickedBtnProcess)
 END_MESSAGE_MAP()
 
 
@@ -120,6 +121,9 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	m_pImageWindow->MoveWindow(IMAGE_WINDOW_MARGIN_WIDTH, IMAGE_WINDOW_MARGIN_HEIGHT, IMAGE_WINDOW_WIDTH, IMAGE_WINDOW_HEIGHT);
 	m_pImageWindow->InitImage();
 	m_pImageWindow->ShowWindow(SW_SHOW);
+
+	// 이미지 처리 클래스 생성
+	m_pImageProcess = new CImageProcess();
 
 	// 입력 안내 텍스트
 	CString strMsg;
@@ -187,6 +191,9 @@ void CgMFCProjectDlg::OnDestroy()
 
 	if (m_pImageWindow)
 		delete m_pImageWindow;
+
+	if (m_pImageProcess)
+		delete m_pImageProcess;
 }
 
 
@@ -209,5 +216,13 @@ void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 		cout << "nPosX, nPosY : " << nPosX << ", " << nPosY  << endl;
 		m_pImageWindow->DrawPattern(nPosX, nPosY, nInputSize);
 	}
+}
 
+
+void CgMFCProjectDlg::OnBnClickedBtnProcess()
+{
+	int nCenterX = 0;
+	int nCenterY = 0;
+	m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY);
+	m_pImageWindow->DrawCrossLine(nCenterX, nCenterY);
 }
