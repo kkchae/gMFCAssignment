@@ -203,6 +203,11 @@ void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 		strMsg.Format(IDS_WARN_INPUT_VALUE, nMinVal);
 		AfxMessageBox(strMsg);
 	}
-	
+	else {
+		int nPosX = rand() % (IMAGE_WINDOW_WIDTH - nInputSize + 1);
+		int nPosY = rand() % (IMAGE_WINDOW_HEIGHT - nInputSize + 1);
+		cout << "nPosX, nPosY : " << nPosX << ", " << nPosY  << endl;
+		m_pImageWindow->DrawPattern(nPosX, nPosY, nInputSize);
+	}
 
 }

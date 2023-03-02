@@ -60,7 +60,7 @@ void CImageWindow::OnPaint()
 	}
 }
 
-void CImageWindow::InitImage(void)
+void CImageWindow::InitImage(int nBPP /*= BIT_PER_PIXEL_8*/)
 {
 	CRect rect;
 	this->GetClientRect(&rect);
@@ -68,14 +68,13 @@ void CImageWindow::InitImage(void)
 
 	int nWidth = rect.right;
 	int nHeight = rect.bottom;
-	int nBPP = BIT_PER_PIXEL_8;
 
 	m_Image.Create(nWidth, -nHeight, nBPP);
 
-	int nColorNumber = 1 << nBPP;
-	cout << "nColorNumber : " << nColorNumber << endl;
-
 	if (BIT_PER_PIXEL_8 == nBPP) {
+		int nColorNumber = 1 << nBPP;
+		cout << "nColorNumber : " << nColorNumber << endl;
+
 		RGBQUAD* rgb = new RGBQUAD[nColorNumber];
 		for (int i = 0; i < nColorNumber; i++) {
 			rgb[i].rgbRed = rgb[i].rgbGreen = rgb[i].rgbBlue = i;
@@ -87,9 +86,40 @@ void CImageWindow::InitImage(void)
 
 		delete[] rgb;
 	}
-	//else if (BIT_PER_PIXEL_16 == nBPP) {
-	//	unsigned short* fm = (unsigned short*)m_Image.GetBits();
-	//	memset(fm, COLOR_WHITE, sizeof(unsigned short) * nWidth * nHeight);
-	//}
-	//else {}
+}
+
+void CImageWindow::DrawPattern(const int nPosX, const int nPosY, const int nSize)
+{
+	int nWidth = m_Image.GetWidth();
+	int nHeight = m_Image.GetHeight();
+	int nPitch = m_Image.GetPitch();
+
+	unsigned char* fm = (unsigned char*)m_Image.GetBits();
+	memset(fm, COLOR_BLACK, sizeof(unsigned char) * nWidth * nHeight); // 이미지 값 초기화
+	
+	int nRadius = (int)(nSize / 2);
+	int nCenterX = nPosX + nRadius;
+	int nCenterY = nPosY + nRadius;
+
+	for (int nCurY = nPosY; nCurY < nPosY + nSize; nCurY++) {
+		for (int nCurX = nPosX; nCurX < nPosX + nSize; nCurX++) {
+			if (CheckInnerCircle(nCenterX, nCenterY, nRadius, nCurX, nCurY)) {
+				fm[nCurY * nPitch + nCurX] = rand() % 256;
+			}
+		}
+	}
+
+	this->Invalidate();
+}
+
+BOOL CImageWindow::CheckInnerCircle(int nCenterX, int nCenterY, int nRadius, int nTargetX, int nTargetY) const
+{
+	BOOL bRet = FALSE;
+	int dX = nTargetX - nCenterX;
+	int dY = nTargetY - nCenterY;
+
+	if ((dX * dX + dY * dY) < nRadius * nRadius)
+		bRet = TRUE;
+
+	return bRet;
 }

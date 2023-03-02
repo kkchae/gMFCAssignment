@@ -26,5 +26,7 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
-	void InitImage(void);
+	void InitImage(int nBPP = BIT_PER_PIXEL_8);
+	void DrawPattern(const int nPosX, const int nPosY, const int nSize);
+	BOOL CheckInnerCircle(int nCenterX, int nCenterY, int nRadius, int nTargetX, int nTargetY) const;
 };
