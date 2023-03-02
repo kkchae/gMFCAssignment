@@ -9,7 +9,12 @@
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+	#define new DEBUG_NEW
+	#ifdef UNICODE
+		#pragma comment(linker, "/ENTRY:wWinMainCRTStartup /subsystem:console")
+	#else
+		#pragma comment(linker, "/ENTRY:WinMainCRTStartup /subsystem:console")
+	#endif
 #endif
 
 
@@ -65,6 +70,7 @@ BEGIN_MESSAGE_MAP(CgMFCProjectDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -100,6 +106,15 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	this->MoveWindow(0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+
+	m_pImageWindow = new CImageWindow(this);
+	m_pImageWindow->Create(IDD_IMAGE_WINDOW, NULL);
+	m_pImageWindow->MoveWindow(5, 5, IMAGE_WINDOW_WIDTH, IMAGE_WINDOW_HEIGHT);
+	
+	m_pImageWindow->ShowWindow(SW_SHOW);
+	m_pImageWindow->InitImage();
+
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -153,3 +168,12 @@ HCURSOR CgMFCProjectDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CgMFCProjectDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	if (m_pImageWindow)
+		delete m_pImageWindow;
+}

@@ -29,7 +29,21 @@
 
 
 
+#define MAIN_WINDOW_WIDTH		960					// 기본 다이얼로그 가로 크기
+#define MAIN_WINDOW_HEIGHT		690					// 기본 다이얼로그 세로 크기
+#define IMAGE_WINDOW_WIDTH		640					// 내부 이미지 다이얼로그 가로 크기
+#define IMAGE_WINDOW_HEIGHT		640					// 내부 이미지 다이얼로그 세로 크기
 
+typedef enum _BIT_PER_PIXEL { // 픽셀당 비트 수
+	BIT_PER_PIXEL_1 = 1,
+	BIT_PER_PIXEL_2 = 2,
+	BIT_PER_PIXEL_4 = 4,
+	BIT_PER_PIXEL_8 = 8,
+	BIT_PER_PIXEL_16 = 16,
+} BIT_PER_PIXEL;
+
+#define COLOR_WHITE				RGB(255, 255, 255)	// white
+#define COLOR_BLACK				RGB(0, 0, 0)		// black
 
 
 
