@@ -44,6 +44,7 @@ namespace MyNameSpace
 
 	#define CROSS_LINE_WIDTH			2		// 무게중심 십자라인 두께
 	#define CROSS_LINE_LENGTH			20		// 무게중심 십자라인 크기
+	#define AROUND_MARGIN		5 // 패턴 외곽에 그릴 원의 거리 margin
 
 	typedef enum _BIT_PER_PIXEL { // 픽셀당 비트 수
 		BIT_PER_PIXEL_1 = 1,

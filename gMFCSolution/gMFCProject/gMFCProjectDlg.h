@@ -18,12 +18,18 @@ private:
 public:
 	CgMFCProjectDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
+	enum EDLG_STATUS {
+		EDLG_STATUS_INIT = 0,
+		EDLG_STATUS_PROCESS_USABLE,
+		EDLG_STATUS_PROCESS_UNUSABLE,
+	};
+
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_GMFCPROJECT_DIALOG };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
 
 
@@ -42,4 +48,6 @@ public:
 	int m_nInputSize;
 	afx_msg void OnBnClickedBtnMakePattern();
 	afx_msg void OnBnClickedBtnProcess();
+	afx_msg void OnUpdateEditInputSize();
+	void UpdateDlgItems(EDLG_STATUS eStatus = EDLG_STATUS_INIT);
 };

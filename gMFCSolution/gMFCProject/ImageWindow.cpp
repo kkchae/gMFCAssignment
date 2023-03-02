@@ -141,3 +141,27 @@ void CImageWindow::DrawCrossLine(const int nPosX, const int nPosY, int nLineWidt
 		pen.DeleteObject();
 	}
 }
+
+void CImageWindow::DrawAroundCircle(const int nPosX, const int nPosY, const int nRadius, int nLineWidth /*= CROSS_LINE_WIDTH*/, int nLineLength /*= CROSS_LINE_LENGTH*/)
+{
+	CDC* pDC = GetDC();
+	if (pDC) {
+		CPen pen;
+		pen.CreatePen(PS_SOLID, nLineWidth, COLOR_YELLOW);
+		CPen* oldPen = pDC->SelectObject(&pen);
+
+		CBrush brush;
+		brush.CreateSolidBrush(COLOR_YELLOW);
+		brush.CreateStockObject(NULL_BRUSH);
+		CBrush* oldBrush = pDC->SelectObject(&brush);
+
+		pDC->Ellipse(
+			nPosX - nRadius - AROUND_MARGIN, nPosY - nRadius - AROUND_MARGIN,
+			nPosX + nRadius + AROUND_MARGIN, nPosY + nRadius + AROUND_MARGIN);
+
+		pDC->SelectObject(oldPen);
+		pDC->SelectObject(oldBrush);
+		pen.DeleteObject();
+		brush.DeleteObject();
+	}
+}

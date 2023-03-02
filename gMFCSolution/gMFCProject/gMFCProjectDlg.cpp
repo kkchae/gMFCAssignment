@@ -60,6 +60,8 @@ END_MESSAGE_MAP()
 CgMFCProjectDlg::CgMFCProjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GMFCPROJECT_DIALOG, pParent)
 	, m_nInputSize(0)
+	, m_pImageWindow(nullptr)
+	, m_pImageProcess(nullptr)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -77,6 +79,7 @@ BEGIN_MESSAGE_MAP(CgMFCProjectDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BTN_MAKE_PATTERN, &CgMFCProjectDlg::OnBnClickedBtnMakePattern)
 	ON_BN_CLICKED(IDC_BTN_PROCESS, &CgMFCProjectDlg::OnBnClickedBtnProcess)
+	ON_EN_UPDATE(IDC_EDIT_INPUT_SIZE, &CgMFCProjectDlg::OnUpdateEditInputSize)
 END_MESSAGE_MAP()
 
 
@@ -117,7 +120,7 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 
 	// 이미지 윈도우 생성, 크기 조정, 초기화
 	m_pImageWindow = new CImageWindow(this);
-	m_pImageWindow->Create(IDD_IMAGE_WINDOW, NULL);
+	m_pImageWindow->Create(IDD_IMAGE_WINDOW, nullptr);
 	m_pImageWindow->MoveWindow(IMAGE_WINDOW_MARGIN_WIDTH, IMAGE_WINDOW_MARGIN_HEIGHT, IMAGE_WINDOW_WIDTH, IMAGE_WINDOW_HEIGHT);
 	m_pImageWindow->InitImage();
 	m_pImageWindow->ShowWindow(SW_SHOW);
@@ -125,12 +128,15 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	// 이미지 처리 클래스 생성
 	m_pImageProcess = new CImageProcess();
 
-	// 입력 안내 텍스트
+	// 다이얼로그 내 컨트롤 상태 초기화
+	UpdateDlgItems(EDLG_STATUS_INIT);
+
+	// 입력 안내 텍스트 설정
 	CString strMsg;
 	strMsg.Format(IDS_INFO_INPUT_VALUE, IMAGE_WINDOW_WIDTH < IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_HEIGHT);
 	GetDlgItem(IDC_STATIC_INFO)->SetWindowText(strMsg);
-	
 	UpdateData(FALSE);
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -183,8 +189,6 @@ HCURSOR CgMFCProjectDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CgMFCProjectDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
@@ -196,28 +200,28 @@ void CgMFCProjectDlg::OnDestroy()
 		delete m_pImageProcess;
 }
 
-
 void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 {
 	// 입력값 검사
-	int nInputSize = GetDlgItemInt(IDC_EDIT_INPUT_SIZE);
-	cout << "InputSize : " << nInputSize << endl;
+	UpdateData(TRUE);
+	cout << "InputSize : " << m_nInputSize << endl;
 
 	int nMinVal = IMAGE_WINDOW_WIDTH < IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_HEIGHT;
 
-	if (nInputSize > nMinVal || nInputSize < 1) {
+	if (m_nInputSize > nMinVal || m_nInputSize < 1) {
 		CString strMsg;
 		strMsg.Format(IDS_WARN_INPUT_VALUE, nMinVal);
 		AfxMessageBox(strMsg);
 	}
 	else {
-		int nPosX = rand() % (IMAGE_WINDOW_WIDTH - nInputSize + 1);
-		int nPosY = rand() % (IMAGE_WINDOW_HEIGHT - nInputSize + 1);
+		int nPosX = rand() % (IMAGE_WINDOW_WIDTH - m_nInputSize + 1);
+		int nPosY = rand() % (IMAGE_WINDOW_HEIGHT - m_nInputSize + 1);
 		cout << "nPosX, nPosY : " << nPosX << ", " << nPosY  << endl;
-		m_pImageWindow->DrawPattern(nPosX, nPosY, nInputSize);
+		m_pImageWindow->DrawPattern(nPosX, nPosY, m_nInputSize);
+
+		UpdateDlgItems(EDLG_STATUS_PROCESS_USABLE);
 	}
 }
-
 
 void CgMFCProjectDlg::OnBnClickedBtnProcess()
 {
@@ -225,6 +229,30 @@ void CgMFCProjectDlg::OnBnClickedBtnProcess()
 	int nCenterY = 0;
 
 	// threshold 값 초과하는 픽셀의 무게중심 찾기
-	if( m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY) )
+	if (m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY)) {
 		m_pImageWindow->DrawCrossLine(nCenterX, nCenterY); // 무게중심에 십자모양 라인 그리기
+		m_pImageWindow->DrawAroundCircle(nCenterX, nCenterY, m_nInputSize / 2); // 주위에 원 그리기
+	}
+}
+
+void CgMFCProjectDlg::OnUpdateEditInputSize()
+{
+	UpdateDlgItems(EDLG_STATUS_PROCESS_UNUSABLE);
+}
+
+void CgMFCProjectDlg::UpdateDlgItems(EDLG_STATUS eStatus /*= EDLG_STATUS_INIT*/)
+{
+	switch (eStatus)
+	{
+	case EDLG_STATUS_PROCESS_USABLE:
+		GetDlgItem(IDC_BTN_PROCESS)->EnableWindow(TRUE);
+		break;
+	case EDLG_STATUS_PROCESS_UNUSABLE:
+		GetDlgItem(IDC_BTN_PROCESS)->EnableWindow(FALSE);
+		break;
+	case EDLG_STATUS_INIT:
+	default:
+		GetDlgItem(IDC_BTN_PROCESS)->EnableWindow(FALSE);
+		break;
+	}
 }

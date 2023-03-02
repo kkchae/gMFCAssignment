@@ -9,7 +9,7 @@ public:
 	virtual ~CImageProcess();
 
 	BOOL FindPattern(CImage* pImage, const int nThreshHold);
-	BOOL FindPattern(CImage* pImage, const int nThreshHold, int* nCenterX = NULL, int* nCenterY = NULL);
+	BOOL FindPattern(CImage* pImage, const int nThreshHold, int* nCenterX = nullptr, int* nCenterY = nullptr);
 };
 
 

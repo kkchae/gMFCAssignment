@@ -30,4 +30,5 @@ public:
 	void DrawPattern(const int nPosX, const int nPosY, const int nSize);
 	BOOL CheckInnerCircle(int nCenterX, int nCenterY, int nRadius, int nTargetX, int nTargetY) const;
 	void DrawCrossLine(const int nPosX, const int nPosY, int nLineWidth = CROSS_LINE_WIDTH, int nLineLength = CROSS_LINE_LENGTH);
+	void DrawAroundCircle(const int nPosX, const int nPosY, const int nRadius, int nLineWidth = CROSS_LINE_WIDTH, int nLineLength = CROSS_LINE_LENGTH);
 };
