@@ -72,15 +72,24 @@ void CImageWindow::InitImage(void)
 
 	m_Image.Create(nWidth, -nHeight, nBPP);
 
+	int nColorNumber = 1 << nBPP;
+	cout << "nColorNumber : " << nColorNumber << endl;
+
 	if (BIT_PER_PIXEL_8 == nBPP) {
-		static RGBQUAD rgb[256];
-		for (int i = 0; i < 256; i++) {
+		RGBQUAD* rgb = new RGBQUAD[nColorNumber];
+		for (int i = 0; i < nColorNumber; i++) {
 			rgb[i].rgbRed = rgb[i].rgbGreen = rgb[i].rgbBlue = i;
 		}
-		m_Image.SetColorTable(0, 256, rgb);
+		m_Image.SetColorTable(0, nColorNumber, rgb);
+
+		unsigned char* fm = (unsigned char*)m_Image.GetBits();
+		memset(fm, COLOR_BLACK, sizeof(unsigned char) * nWidth * nHeight);
+
+		delete[] rgb;
 	}
-
-	unsigned char* fm = (unsigned char*)m_Image.GetBits();
-
-	memset(fm, COLOR_WHITE, sizeof(unsigned char) * nWidth * nHeight);
+	//else if (BIT_PER_PIXEL_16 == nBPP) {
+	//	unsigned short* fm = (unsigned short*)m_Image.GetBits();
+	//	memset(fm, COLOR_WHITE, sizeof(unsigned short) * nWidth * nHeight);
+	//}
+	//else {}
 }

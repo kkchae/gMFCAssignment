@@ -29,10 +29,12 @@
 
 
 
-#define MAIN_WINDOW_WIDTH		960					// 기본 다이얼로그 가로 크기
-#define MAIN_WINDOW_HEIGHT		690					// 기본 다이얼로그 세로 크기
+#define MAIN_WINDOW_WIDTH		680					// 기본 다이얼로그 가로 크기
+#define MAIN_WINDOW_HEIGHT		780					// 기본 다이얼로그 세로 크기
 #define IMAGE_WINDOW_WIDTH		640					// 내부 이미지 다이얼로그 가로 크기
 #define IMAGE_WINDOW_HEIGHT		640					// 내부 이미지 다이얼로그 세로 크기
+#define IMAGE_WINDOW_MARGIN_WIDTH		10					// 내부 이미지 다이얼로그 출력 위치 가로 margin
+#define IMAGE_WINDOW_MARGIN_HEIGHT		90					// 내부 이미지 다이얼로그 출력 위치 세로 margin
 
 typedef enum _BIT_PER_PIXEL { // 픽셀당 비트 수
 	BIT_PER_PIXEL_1 = 1,
@@ -42,6 +44,7 @@ typedef enum _BIT_PER_PIXEL { // 픽셀당 비트 수
 	BIT_PER_PIXEL_16 = 16,
 } BIT_PER_PIXEL;
 
+// for BIT_PER_PIXEL_8
 #define COLOR_WHITE				RGB(255, 255, 255)	// white
 #define COLOR_BLACK				RGB(0, 0, 0)		// black
 

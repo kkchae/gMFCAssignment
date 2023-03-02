@@ -38,4 +38,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnDestroy();
+	int m_nInputSize;
+	afx_msg void OnBnClickedBtnMakePattern();
 };

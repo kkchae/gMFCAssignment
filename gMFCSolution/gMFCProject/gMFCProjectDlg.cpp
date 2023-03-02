@@ -7,6 +7,8 @@
 #include "gMFCProject.h"
 #include "gMFCProjectDlg.h"
 #include "afxdialogex.h"
+#include <iostream>
+using namespace std;
 
 #ifdef _DEBUG
 	#define new DEBUG_NEW
@@ -57,6 +59,7 @@ END_MESSAGE_MAP()
 
 CgMFCProjectDlg::CgMFCProjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GMFCPROJECT_DIALOG, pParent)
+	, m_nInputSize(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -64,6 +67,7 @@ CgMFCProjectDlg::CgMFCProjectDlg(CWnd* pParent /*=nullptr*/)
 void CgMFCProjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT_INPUT_SIZE, m_nInputSize);
 }
 
 BEGIN_MESSAGE_MAP(CgMFCProjectDlg, CDialogEx)
@@ -71,6 +75,7 @@ BEGIN_MESSAGE_MAP(CgMFCProjectDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_BTN_MAKE_PATTERN, &CgMFCProjectDlg::OnBnClickedBtnMakePattern)
 END_MESSAGE_MAP()
 
 
@@ -106,16 +111,22 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	// 메인 윈도우 크기 조정
 	this->MoveWindow(0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 
+	// 이미지 윈도우 생성, 크기 조정, 초기화
 	m_pImageWindow = new CImageWindow(this);
 	m_pImageWindow->Create(IDD_IMAGE_WINDOW, NULL);
-	m_pImageWindow->MoveWindow(5, 5, IMAGE_WINDOW_WIDTH, IMAGE_WINDOW_HEIGHT);
-	
-	m_pImageWindow->ShowWindow(SW_SHOW);
+	m_pImageWindow->MoveWindow(IMAGE_WINDOW_MARGIN_WIDTH, IMAGE_WINDOW_MARGIN_HEIGHT, IMAGE_WINDOW_WIDTH, IMAGE_WINDOW_HEIGHT);
 	m_pImageWindow->InitImage();
+	m_pImageWindow->ShowWindow(SW_SHOW);
 
-
+	// 입력 안내 텍스트
+	CString strMsg;
+	strMsg.Format(IDS_INFO_INPUT_VALUE, IMAGE_WINDOW_WIDTH < IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_HEIGHT);
+	GetDlgItem(IDC_STATIC_INFO)->SetWindowText(strMsg);
+	
+	UpdateData(FALSE);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -176,4 +187,22 @@ void CgMFCProjectDlg::OnDestroy()
 
 	if (m_pImageWindow)
 		delete m_pImageWindow;
+}
+
+
+void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
+{
+	// 입력값 검사
+	int nInputSize = GetDlgItemInt(IDC_EDIT_INPUT_SIZE);
+	cout << "InputSize : " << nInputSize << endl;
+
+	int nMinVal = IMAGE_WINDOW_WIDTH < IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_HEIGHT;
+
+	if (nInputSize > nMinVal || nInputSize < 1) {
+		CString strMsg;
+		strMsg.Format(IDS_WARN_INPUT_VALUE, nMinVal);
+		AfxMessageBox(strMsg);
+	}
+	
+
 }
