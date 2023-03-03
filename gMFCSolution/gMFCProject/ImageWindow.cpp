@@ -98,7 +98,7 @@ void CImageWindow::DrawPattern(const int nPosX, const int nPosY, const int nSize
 	memset(fm, COLOR_BLACK, sizeof(unsigned char) * nWidth * nHeight); // 이미지 값 초기화
 	
 	if (1 == nSize) {
-		fm[nPosX * nPitch + nPosY] = (rand() % 255) + 1; // 1~255
+		fm[nPosY * nPitch + nPosX] = (rand() % 255) + 1; // 1~255
 	}
 	else {
 		int nRadius = (int)(nSize / 2);

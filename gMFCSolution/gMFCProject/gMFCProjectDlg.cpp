@@ -62,6 +62,9 @@ CgMFCProjectDlg::CgMFCProjectDlg(CWnd* pParent /*=nullptr*/)
 	, m_nInputSize(1)
 	, m_pImageWindow(nullptr)
 	, m_pImageProcess(nullptr)
+	, m_nImageWidth(0)
+	, m_nImageHeight(0)
+	, m_nMinImageSize(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_SMILE);
 }
@@ -118,14 +121,18 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	 //shared_ptr<CImageWindow> m_pImage;
 
 	// 메인 윈도우 크기 조정. 내부 이미지 윈도우 크기에 맞춰서 생성
+	m_nImageWidth = IMAGE_WINDOW_WIDTH_MIN <= IMAGE_WINDOW_WIDTH ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_WIDTH_MIN;
+	m_nImageHeight = IMAGE_WINDOW_HEIGHT_MIN <= IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_HEIGHT : IMAGE_WINDOW_HEIGHT_MIN;
+	m_nMinImageSize = m_nImageWidth < m_nImageHeight ? m_nImageWidth : m_nImageHeight;
+
 	this->MoveWindow(0, 0,
-		IMAGE_WINDOW_WIDTH + IMAGE_WINDOW_MARGIN_WIDTH * 4,
-		IMAGE_WINDOW_HEIGHT + IMAGE_WINDOW_MARGIN_HEIGHT + IMAGE_WINDOW_MARGIN_WIDTH * 5);
+		m_nImageWidth + IMAGE_WINDOW_MARGIN_WIDTH * 4,
+		m_nImageHeight + IMAGE_WINDOW_MARGIN_HEIGHT + IMAGE_WINDOW_MARGIN_WIDTH * 5);
 
 	// 이미지 윈도우 생성, 크기 조정, 초기화
 	m_pImageWindow = new CImageWindow(this);
 	m_pImageWindow->Create(IDD_IMAGE_WINDOW, nullptr);
-	m_pImageWindow->MoveWindow(IMAGE_WINDOW_MARGIN_WIDTH, IMAGE_WINDOW_MARGIN_HEIGHT, IMAGE_WINDOW_WIDTH, IMAGE_WINDOW_HEIGHT);
+	m_pImageWindow->MoveWindow(IMAGE_WINDOW_MARGIN_WIDTH, IMAGE_WINDOW_MARGIN_HEIGHT, m_nImageWidth, m_nImageHeight);
 	m_pImageWindow->InitImage();
 	m_pImageWindow->ShowWindow(SW_SHOW);
 
@@ -137,7 +144,7 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 
 	// 입력 안내 텍스트 설정
 	CString strMsg;
-	strMsg.Format(IDS_INFO_INPUT_VALUE, IMAGE_WINDOW_WIDTH < IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_HEIGHT);
+	strMsg.Format(IDS_INFO_INPUT_VALUE, m_nImageWidth < m_nImageHeight ? m_nImageWidth : m_nImageHeight);
 	GetDlgItem(IDC_STATIC_INFO)->SetWindowText(strMsg);
 	UpdateData(FALSE);
 
@@ -207,16 +214,14 @@ void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 	UpdateData(TRUE);
 	cout << "InputSize : " << m_nInputSize << endl;
 
-	int nMinVal = IMAGE_WINDOW_WIDTH < IMAGE_WINDOW_HEIGHT ? IMAGE_WINDOW_WIDTH : IMAGE_WINDOW_HEIGHT;
-
-	if (m_nInputSize > nMinVal || m_nInputSize < 1) {
+	if (m_nInputSize > m_nMinImageSize || m_nInputSize < 1) {
 		CString strMsg;
-		strMsg.Format(IDS_WARN_INPUT_VALUE, nMinVal);
+		strMsg.Format(IDS_WARN_INPUT_VALUE, m_nMinImageSize);
 		AfxMessageBox(strMsg);
 	}
 	else {
-		int nPosX = rand() % (IMAGE_WINDOW_WIDTH - m_nInputSize + 1);
-		int nPosY = rand() % (IMAGE_WINDOW_HEIGHT - m_nInputSize + 1);
+		int nPosX = rand() % (m_nImageWidth - m_nInputSize + 1);
+		int nPosY = rand() % (m_nImageHeight - m_nInputSize + 1);
 		cout << "Create pattern - PosX, PosY : " << nPosX << ", " << nPosY << endl;
 		m_pImageWindow->DrawPattern(nPosX, nPosY, m_nInputSize);
 

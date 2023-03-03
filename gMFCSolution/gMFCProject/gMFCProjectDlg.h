@@ -16,8 +16,11 @@ typedef shared_ptr<CImageProcess> CImageProcessPtr;
 class CgMFCProjectDlg : public CDialogEx
 {
 private:
-	CImageWindow* m_pImageWindow;
+	CImageWindow* m_pImageWindow; // 이미지를 그릴 내부 다이얼로그
 	CImageProcessPtr m_pImageProcess; // 현재 단계에서는 unique_ptr도 가능
+	int m_nImageWidth; // 이미지 다이얼로그 가로 크기
+	int m_nImageHeight; // 이미지 다이얼로그 세로 크기
+	int m_nMinImageSize; // 이미지 다이얼로그 가로, 세로 크기중 작은값
 
 // 생성입니다.
 public:
