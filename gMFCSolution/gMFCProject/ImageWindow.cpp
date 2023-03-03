@@ -97,14 +97,19 @@ void CImageWindow::DrawPattern(const int nPosX, const int nPosY, const int nSize
 	unsigned char* fm = (unsigned char*)m_Image.GetBits();
 	memset(fm, COLOR_BLACK, sizeof(unsigned char) * nWidth * nHeight); // 이미지 값 초기화
 	
-	int nRadius = (int)(nSize / 2);
-	int nCenterX = nPosX + nRadius;
-	int nCenterY = nPosY + nRadius;
+	if (1 == nSize) {
+		fm[nPosX * nPitch + nPosY] = (rand() % 255) + 1; // 1~255
+	}
+	else {
+		int nRadius = (int)(nSize / 2);
+		int nCenterX = nPosX + nRadius;
+		int nCenterY = nPosY + nRadius;
 
-	for (int nCurY = nPosY; nCurY < nPosY + nSize; nCurY++) {
-		for (int nCurX = nPosX; nCurX < nPosX + nSize; nCurX++) {
-			if (CheckInnerCircle(nCenterX, nCenterY, nRadius, nCurX, nCurY)) {
-				fm[nCurY * nPitch + nCurX] = (rand() % 255) + 1; // 1~255
+		for (int nCurY = nPosY; nCurY < nPosY + nSize; nCurY++) {
+			for (int nCurX = nPosX; nCurX < nPosX + nSize; nCurX++) {
+				if (CheckInnerCircle(nCenterX, nCenterY, nRadius, nCurX, nCurY)) {
+					fm[nCurY * nPitch + nCurX] = (rand() % 255) + 1; // 1~255
+				}
 			}
 		}
 	}
