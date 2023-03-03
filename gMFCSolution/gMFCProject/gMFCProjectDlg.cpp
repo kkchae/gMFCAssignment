@@ -63,7 +63,7 @@ CgMFCProjectDlg::CgMFCProjectDlg(CWnd* pParent /*=nullptr*/)
 	, m_pImageWindow(nullptr)
 	, m_pImageProcess(nullptr)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_SMILE);
 }
 
 void CgMFCProjectDlg::DoDataExchange(CDataExchange* pDX)

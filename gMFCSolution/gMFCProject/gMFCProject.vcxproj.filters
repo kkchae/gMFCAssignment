@@ -71,5 +71,11 @@
     <Image Include="res\gMFCProject.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\myIcon.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\myIcon.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>
