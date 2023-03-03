@@ -30,12 +30,10 @@
 
 namespace MyNameSpace
 {
-	#define MAIN_WINDOW_WIDTH		680					// 기본 다이얼로그 가로 크기
-	#define MAIN_WINDOW_HEIGHT		780					// 기본 다이얼로그 세로 크기
 	#define IMAGE_WINDOW_WIDTH		640					// 내부 이미지 다이얼로그 가로 크기
 	#define IMAGE_WINDOW_HEIGHT		640					// 내부 이미지 다이얼로그 세로 크기
 	#define IMAGE_WINDOW_MARGIN_WIDTH		10					// 내부 이미지 다이얼로그 출력 위치 가로 margin
-	#define IMAGE_WINDOW_MARGIN_HEIGHT		90					// 내부 이미지 다이얼로그 출력 위치 세로 margin
+	#define IMAGE_WINDOW_MARGIN_HEIGHT		80					// 내부 이미지 다이얼로그 출력 위치 세로 margin
 
 	// for BIT_PER_PIXEL_8
 	#define COLOR_WHITE				RGB(255, 255, 255)	// white

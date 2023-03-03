@@ -115,8 +115,10 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	// 메인 윈도우 크기 조정
-	this->MoveWindow(0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+	// 메인 윈도우 크기 조정. 내부 이미지 윈도우 크기에 맞춰서 생성
+	this->MoveWindow(0, 0, 
+		IMAGE_WINDOW_WIDTH + IMAGE_WINDOW_MARGIN_WIDTH * 4, 
+		IMAGE_WINDOW_HEIGHT + IMAGE_WINDOW_MARGIN_HEIGHT + IMAGE_WINDOW_MARGIN_WIDTH * 5);
 
 	// 이미지 윈도우 생성, 크기 조정, 초기화
 	m_pImageWindow = new CImageWindow(this);
