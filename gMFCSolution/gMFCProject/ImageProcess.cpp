@@ -6,7 +6,10 @@
 #include "ImageProcess.h"
 #include <thread>
 #include <iostream>
+#include <chrono>
+
 using namespace std;
+using namespace chrono;
 
 // CImageProcess
 
@@ -37,6 +40,8 @@ BOOL CImageProcess::FindPatternProcess(CImage* pImage, const int nThreshHold, in
 {
 	BOOL bFound = FALSE;
 	if (pImage != nullptr) {
+		steady_clock::time_point beginTime = steady_clock::now();
+
 		int nWidth = pImage->GetWidth();
 		int nHeight = pImage->GetHeight();
 		int nPitch = pImage->GetPitch();
@@ -71,6 +76,17 @@ BOOL CImageProcess::FindPatternProcess(CImage* pImage, const int nThreshHold, in
 		}
 		else {
 			bFound = FALSE;
+		}
+
+		steady_clock::time_point endTime = steady_clock::now();
+
+		microseconds microsec = duration_cast<microseconds>(endTime - beginTime); // us(micro seconds) : 1 / 1,000,000 sec
+		if (microsec > steady_clock::duration::zero()) {
+			cout << "Thread id :" << this_thread::get_id() << ", process time : " << microsec.count() << " micro seconds" << endl;
+		}
+		else {
+			nanoseconds nanosec = duration_cast<nanoseconds>(endTime - beginTime); // ns(nano seconds) : 1 / 10^9 sec
+			cout << "Thread id :" << this_thread::get_id() << ", process time : " << nanosec.count() << " nano seconds" << endl;
 		}
 	}
 	return bFound;
