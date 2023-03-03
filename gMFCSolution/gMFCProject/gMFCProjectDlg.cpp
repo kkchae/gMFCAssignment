@@ -217,7 +217,7 @@ void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 	else {
 		int nPosX = rand() % (IMAGE_WINDOW_WIDTH - m_nInputSize + 1);
 		int nPosY = rand() % (IMAGE_WINDOW_HEIGHT - m_nInputSize + 1);
-		cout << "nPosX, nPosY : " << nPosX << ", " << nPosY << endl;
+		cout << "Create pattern - PosX, PosY : " << nPosX << ", " << nPosY << endl;
 		m_pImageWindow->DrawPattern(nPosX, nPosY, m_nInputSize);
 
 		UpdateDlgItems(EDLG_STATUS_PROCESS_USABLE);
