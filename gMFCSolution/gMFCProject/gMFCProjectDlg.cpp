@@ -32,7 +32,7 @@ public:
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 // 구현입니다.
@@ -59,7 +59,7 @@ END_MESSAGE_MAP()
 
 CgMFCProjectDlg::CgMFCProjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GMFCPROJECT_DIALOG, pParent)
-	, m_nInputSize(0)
+	, m_nInputSize(1)
 	, m_pImageWindow(nullptr)
 	, m_pImageProcess(nullptr)
 {
@@ -115,9 +115,11 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	 //shared_ptr<CImageWindow> m_pImage;
+
 	// 메인 윈도우 크기 조정. 내부 이미지 윈도우 크기에 맞춰서 생성
-	this->MoveWindow(0, 0, 
-		IMAGE_WINDOW_WIDTH + IMAGE_WINDOW_MARGIN_WIDTH * 4, 
+	this->MoveWindow(0, 0,
+		IMAGE_WINDOW_WIDTH + IMAGE_WINDOW_MARGIN_WIDTH * 4,
 		IMAGE_WINDOW_HEIGHT + IMAGE_WINDOW_MARGIN_HEIGHT + IMAGE_WINDOW_MARGIN_WIDTH * 5);
 
 	// 이미지 윈도우 생성, 크기 조정, 초기화
@@ -128,7 +130,7 @@ BOOL CgMFCProjectDlg::OnInitDialog()
 	m_pImageWindow->ShowWindow(SW_SHOW);
 
 	// 이미지 처리 클래스 생성
-	m_pImageProcess = new CImageProcess();
+	m_pImageProcess = CImageProcessPtr(new CImageProcess());
 
 	// 다이얼로그 내 컨트롤 상태 초기화
 	UpdateDlgItems(EDLG_STATUS_INIT);
@@ -197,9 +199,6 @@ void CgMFCProjectDlg::OnDestroy()
 
 	if (m_pImageWindow != nullptr)
 		delete m_pImageWindow;
-
-	if (m_pImageProcess != nullptr)
-		delete m_pImageProcess;
 }
 
 void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
@@ -218,7 +217,7 @@ void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 	else {
 		int nPosX = rand() % (IMAGE_WINDOW_WIDTH - m_nInputSize + 1);
 		int nPosY = rand() % (IMAGE_WINDOW_HEIGHT - m_nInputSize + 1);
-		cout << "nPosX, nPosY : " << nPosX << ", " << nPosY  << endl;
+		cout << "nPosX, nPosY : " << nPosX << ", " << nPosY << endl;
 		m_pImageWindow->DrawPattern(nPosX, nPosY, m_nInputSize);
 
 		UpdateDlgItems(EDLG_STATUS_PROCESS_USABLE);
@@ -227,13 +226,15 @@ void CgMFCProjectDlg::OnBnClickedBtnMakePattern()
 
 void CgMFCProjectDlg::OnBnClickedBtnProcess()
 {
-	int nCenterX = 0;
-	int nCenterY = 0;
+	if (m_pImageProcess != nullptr) {
+		int nCenterX = 0;
+		int nCenterY = 0;
 
-	// threshold 값 초과하는 픽셀의 무게중심 찾기
-	if (m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY)) {
-		m_pImageWindow->DrawCrossLine(nCenterX, nCenterY); // 무게중심에 십자모양 라인 그리기
-		m_pImageWindow->DrawAroundCircle(nCenterX, nCenterY, m_nInputSize / 2); // 주위에 원 그리기
+		// threshold 값 초과하는 픽셀의 무게중심 찾기
+		if (m_pImageProcess->FindPattern(&m_pImageWindow->m_Image, COLOR_BLACK, &nCenterX, &nCenterY)) {
+			m_pImageWindow->DrawCrossLine(nCenterX, nCenterY); // 무게중심에 십자모양 라인 그리기
+			m_pImageWindow->DrawAroundCircle(nCenterX, nCenterY, m_nInputSize / 2); // 주위에 원 그리기
+		}
 	}
 }
 

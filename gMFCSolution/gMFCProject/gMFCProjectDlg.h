@@ -6,13 +6,18 @@
 
 #include "ImageWindow.h"
 #include "ImageProcess.h"
+#include <memory>
+using namespace std;
+
+typedef shared_ptr<CImageProcess> CImageProcessPtr;
+
 
 // CgMFCProjectDlg 대화 상자
 class CgMFCProjectDlg : public CDialogEx
 {
 private:
 	CImageWindow* m_pImageWindow;
-	CImageProcess* m_pImageProcess;
+	CImageProcessPtr m_pImageProcess; // 현재 단계에서는 unique_ptr도 가능
 
 // 생성입니다.
 public:
