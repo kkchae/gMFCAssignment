@@ -30,8 +30,8 @@
 
 namespace MyNameSpace
 {
-	#define IMAGE_WINDOW_WIDTH_MIN	400
-	#define IMAGE_WINDOW_HEIGHT_MIN	100
+	#define IMAGE_WINDOW_WIDTH_MIN	400					// 내부 이미지 다이얼로그 가로 최소 크기
+	#define IMAGE_WINDOW_HEIGHT_MIN	100					// 내부 이미지 다이얼로그 세로 최소 크기
 	#define IMAGE_WINDOW_WIDTH		640					// 내부 이미지 다이얼로그 가로 크기
 	#define IMAGE_WINDOW_HEIGHT		640					// 내부 이미지 다이얼로그 세로 크기
 	#define IMAGE_WINDOW_MARGIN_WIDTH		10					// 내부 이미지 다이얼로그 출력 위치 가로 margin

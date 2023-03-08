@@ -28,8 +28,8 @@ public:
 
 	enum EDLG_STATUS {
 		EDLG_STATUS_INIT = 0,
-		EDLG_STATUS_PROCESS_USABLE,
-		EDLG_STATUS_PROCESS_UNUSABLE,
+		EDLG_STATUS_PROCESS_USABLE,		// "Process" 버튼 사용 가능
+		EDLG_STATUS_PROCESS_UNUSABLE,	// "Process" 버튼 사용 불가능
 	};
 
 // 대화 상자 데이터입니다.
